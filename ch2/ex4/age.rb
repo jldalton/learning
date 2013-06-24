@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 puts "author's age"
 
 age_seconds = 1111000000
