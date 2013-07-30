@@ -36,8 +36,7 @@ def maybe_use_candidate(number, candidate, roman_so_far)
 
     if (number / candidate > 0)
         number = number - candidate
-        letter = as_letter(candidate)
-        roman_so_far.push(letter)
+        roman_so_far.push(as_letter(candidate))
     else
         $powers_of_10.each do |subtractor|
             if (is_subtractive(subtractor, candidate) and (number + subtractor) / candidate > 0) 
