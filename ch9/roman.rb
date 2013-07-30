@@ -25,7 +25,7 @@ def is_subtractive amount, from
     return (diff == 1 or diff == 2)
 end
 
-def check_candidate number, candidate, roman_so_far
+def maybe_use_candidate number, candidate, roman_so_far
     if number / candidate > 0
         number = number - candidate
         letter = as_letter(candidate)
@@ -46,7 +46,7 @@ def to_roman number
     roman_so_far = []
     while number > 0
         $roman_values.reverse.each do |candidate|
-            number_left = check_candidate(number, candidate, roman_so_far)
+            number_left = maybe_use_candidate(number, candidate, roman_so_far)
             if number_left < number
                 number = number_left
                 break
@@ -56,11 +56,12 @@ def to_roman number
     return roman_so_far.join("")
 end
 
-puts "Enter a number to Romanize (empty or 0 to quit)"
+puts "Enter a number to Romanize"
 while true
     number = gets.chomp.to_i
     if number == 0 
         break
     end
     puts to_roman(number)
+    puts "Enter another (empty or 0 to quit)"
 end
