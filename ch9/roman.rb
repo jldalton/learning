@@ -15,24 +15,32 @@ $powers_of_10 = [1, 10, 100]
 # 1000 = M
 
 def as_letter value
+    # examples: 1->I, 100->C, 500->D
     $roman_letters[$roman_values.index(value)]
 end
 
-def is_subtractive amount, from
+def is_subtractive(amount, from)
     # Subtractive rule: You can only subtract a power of ten, 
-    # and only from the next two higher "digits", where the digits are {I, V, X, L, C, D, M}        
+    # and only from the next two higher "digits", where the digits are {I, V, X, L, C, D, M}
+    # thus 49 is XLIX not IL
+
     diff = $roman_values.index(from) - $roman_values.index(amount)
     return (diff == 1 or diff == 2)
 end
 
-def maybe_use_candidate number, candidate, roman_so_far
-    if number / candidate > 0
+def maybe_use_candidate(number, candidate, roman_so_far)
+    # first see if we can use the candidate as is;
+    # otherwise see if we can use subtraction.
+    # value returned represents number left to romanize
+    # (a reduced value means we used this candidate) 
+
+    if (number / candidate > 0)
         number = number - candidate
         letter = as_letter(candidate)
         roman_so_far.push(letter)
     else
         $powers_of_10.each do |subtractor|
-            if is_subtractive(subtractor, candidate) and (number + subtractor) / candidate > 0 
+            if (is_subtractive(subtractor, candidate) and (number + subtractor) / candidate > 0) 
                 number = number - (candidate - subtractor)
                 roman_so_far.push(as_letter(subtractor)).push(as_letter(candidate))
                 break
@@ -43,11 +51,12 @@ def maybe_use_candidate number, candidate, roman_so_far
 end
 
 def to_roman number
+    # convert an integer number to a roman numeral string
     roman_so_far = []
     while number > 0
         $roman_values.reverse.each do |candidate|
             number_left = maybe_use_candidate(number, candidate, roman_so_far)
-            if number_left < number
+            if (number_left < number)
                 number = number_left
                 break
             end
@@ -59,7 +68,7 @@ end
 puts "Enter a number to Romanize"
 while true
     number = gets.chomp.to_i
-    if number == 0 
+    if (number == 0) 
         break
     end
     puts to_roman(number)
