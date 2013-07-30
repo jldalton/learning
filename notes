@@ -1,0 +1,11 @@
+#ruby
+
+#string interpolation
+
+puts "fav num"
+fav = gets.chomp.to_i
+puts "hello #{fav+1] is better"
+
+
+# see The Ruby Way in Safari
+
