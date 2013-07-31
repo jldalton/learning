@@ -2,19 +2,9 @@
 
 class Roman
 
-    $roman_values = [1, 5, 10, 50, 100, 500, 1000]
+    $roman_values =  [1,   5,   10,  50,  100, 500, 1000]
     $roman_letters = ['I', 'V', 'X', 'L', 'C', 'D', 'M']
     $powers_of_10 = [1, 10, 100]
-
-    # examples:
-    # 40 = XL
-    # 49 = XLIX (not IL)
-    # 90 = XC
-    # 99 = XCIX
-    # 888 = DCCCLXXXVIII
-    # 900 = CM
-    # 999 = CMXCIX
-    # 1000 = M
 
     def as_letter value
         # examples: 1->I, 100->C, 500->D
