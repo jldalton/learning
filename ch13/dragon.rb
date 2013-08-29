@@ -5,6 +5,7 @@ class Dragon
         @name = name
         @asleep = false
         @stuff_in_belly = 10
+        @wakefulness = 6
         @stuff_in_intestine = 0 # He doesn't need to go.
         puts "#{@name} is born."
     end
@@ -14,14 +15,19 @@ class Dragon
     end
 
     def feed
-        puts "You feed #{@name}." 
+        if full? 
+            puts "#{@name} takes a few bites, but is not hungry."
+        else
+            puts "You feed #{@name}." 
+        end
         @stuff_in_belly = 10 
         passage_of_time
     end
     
     def walk
         puts "You walk #{@name}." 
-        @stuff_in_intestine = 0 
+        @stuff_in_intestine = 0
+        @wakefulness = @wakefulness - 1 
         passage_of_time
     end
     
@@ -62,6 +68,10 @@ class Dragon
 
     private
 
+    def full?
+        @stuff_in_belly >= 8
+    end
+
     def hungry?
         @stuff_in_belly <= 2
     end
@@ -83,6 +93,23 @@ class Dragon
             puts "#{@name} is starving!  In desperation, he eats YOU!"
             exit # This quits the program. 
         end
+
+        if @asleep
+            @wakefulness = @wakefulness + 1
+            if @wakefulness > 10
+                @wakefulness = 10
+            end
+        else
+            @wakefulness = @wakefulness - 1
+        end
+
+        if @wakefulness <= 0
+            puts "#{@name} is exhausted!  In desperation, he kills YOU!"
+            exit
+        elsif @wakefulness <= 2
+            puts "#{@name} is getting sleepy"
+        end
+
         if @stuff_in_intestine >= 10 
             @stuff_in_intestine = 0
             puts "Whoops! #{@name} has an accident..."
@@ -125,7 +152,7 @@ while true do
         pet.walk
     elsif command == "rock"
         pet.rock
-    elsif (command == "bed" or command == "sleep" or command = "put_to_bed") 
+    elsif (command == "bed" or command == "sleep" or command == "put_to_bed") 
         pet.put_to_bed
     elsif command == "help" or command == "?"
         puts "Commands: feed, toss, walk, rock, bed, quit"
